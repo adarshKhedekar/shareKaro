@@ -57,6 +57,6 @@ app.get("/uploads/:id", async (req, res) => {
   res.download(newFile.path, newFile.originalName);
 });
 
-app.listen(process.env.PORT, (req, res) => {
+app.listen(process.env.PORT || 6010, (req, res) => {
   console.log(`server listening on port ${process.env.PORT}`);
 });
