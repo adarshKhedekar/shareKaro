@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 dotenv.config();
 
 
-const url = 'mongodb+srv://adarsh:adarsh123@cluster0.clqwr0k.mongodb.net/filesharing?retryWrites=true&w=majority'
+const url = process.env.DATABASE_URL;
 
 // const url = process.env.DATABASE_URL;
 mongoose.connect(url).then(() => {
