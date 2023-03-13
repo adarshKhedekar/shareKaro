@@ -8,6 +8,7 @@ dotenv.config();
 
 
 const url = process.env.DATABASE_URL;
+const PORT = process.env.PORT || 5000
 
 // const url = process.env.DATABASE_URL;
 mongoose.connect(url).then(() => {
@@ -28,9 +29,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-app.get("/", (req, res) => {
-  res.send("eh");
-});
 app.post("/", upload.array("files", 10), async (req, res) => {
   const files = req.files;
   if (!files) {
@@ -57,6 +55,14 @@ app.get("/uploads/:id", async (req, res) => {
   res.download(newFile.path, newFile.originalName);
 });
 
-app.listen(process.env.PORT || 6010, (req, res) => {
+if(process.env.NODE_ENV == "production"){
+  app.use(express.static('frontend/build'));
+  const path = require('path');
+  app.get('*',(req,res) => {
+    res.sendFile(path.resolve(__dirname,'frontend','build','index.html'));
+  })
+}
+
+app.listen(PORT, (req, res) => {
   console.log(`server listening on port ${process.env.PORT}`);
 });
