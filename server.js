@@ -3,6 +3,7 @@ const multer = require("multer");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const File = require("./File.js");
+const path = require('path');
 const mongoose = require("mongoose");
 dotenv.config();
 
@@ -55,14 +56,15 @@ app.get("/uploads/:id", async (req, res) => {
   res.download(newFile.path, newFile.originalName);
 });
 
-if(process.env.NODE_ENV == "production"){
-  app.use(express.static('frontend/build'));
-  const path = require('path');
+// if(process.env.NODE_ENV == "production"){
+  console.log(path.join(__dirname, './frontend/build'));
+  app.use(express.static(path.join(__dirname, './frontend/build')));
+
   app.get('*',(req,res) => {
-    res.sendFile(path.resolve(__dirname,'frontend','build','index.html'));
+    res.sendFile(path.join(__dirname,'./frontend/build/index.html'));
   })
-}
+// }
 
 app.listen(PORT, (req, res) => {
-  console.log(`server listening on port ${process.env.PORT}`);
+  console.log(`server listening on port ${PORT}`);
 });
